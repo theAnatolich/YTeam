@@ -8,7 +8,16 @@ public class PSQLConnection {
     private final String USER = "postgres";
     private final String PASS = "00000000";
 
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+
     private Connection connection;
+
 
     public PSQLConnection(){
         try {
