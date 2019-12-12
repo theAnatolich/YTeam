@@ -1,5 +1,8 @@
-package com.YTeam.cinema;
+package com.YTeam.cinema.controller;
 
+import com.YTeam.cinema.CheckTicket;
+import com.YTeam.cinema.FilmSession;
+import com.YTeam.cinema.ticket;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -73,6 +76,14 @@ public class appController {
         return "WEB-INF/pages/afisha";
     }
 
+//    @RequestMapping("/")
+//    public ModelAndView index () {
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("index");
+//        modelAndView.setView();
+//        return modelAndView;
+//    }
+
     @GetMapping("/SeetSelection")
     public String getSeetSelection(
             @RequestParam(name="shedule_id", required=false, defaultValue="18") int shedule_id,
@@ -97,36 +108,75 @@ public class appController {
         return "WEB-INF/pages/SeetSelection";
     }
 
-    @GetMapping("/receipt")
-    public String receipt(
-            @RequestParam(name="tic", required=false, defaultValue="") String tickets,
-            Map<String, Object> model
-    ) {
-
-        String[] q=tickets.split("!");
-        for (String i :q
-             ) {
-            model.put("tic"+i, i);
-        }
-        return "WEB-INF/pages/receipt";
-    }
-
-    @PostMapping("SeetSelection")
-    public String getSeetSelection(
-            @RequestParam("filter") String tickets_id, @RequestParam Map<String, Object> model
-    ) throws SQLException {
-
-        String[] q=tickets_id.split("!");
-        String upStr="update into ticket set state=1 where id=";
+//    @GetMapping("/receipt")
+//    public String receipt(
+//            @RequestParam(name="tic", required=false, defaultValue="") String tickets,
+//            Map<String, Object> model
+//    ) {
+//
+//        String[] q=tickets.split("!");
 //        for (String i :q
 //             ) {
-//            stat.executeUpdate(upStr+i);
-//        }?tic="+tickets_id
-        model.put("tic",tickets_id);
-        RedirectView redirectView= new RedirectView("/foo",true);
+//            model.put("tic"+i, i);
+//        }
+//        return "WEB-INF/pages/receipt";
+//    }
 
-        return "redirect:/receipt?tic="+tickets_id;//на оплату
+    @PostMapping("SeetSelection")
+    public ModelAndView getSeetSelection(
+            @RequestParam("filter") String tickets_id, @RequestParam Map<String, Object> model
+    ) throws SQLException, ParseException {
+        ArrayList<CheckTicket> ticketList=new ArrayList<CheckTicket>();
+        String[] q=tickets_id.split("!");
+        //String upStr="update into ticket set state=1 where id=";
+        String selTickets="select t.id,f.name,h.name,t.plase_number,t.row_number,t.price,c.day,c.start_time " +
+                            "from ticket t left join shedule s on(t.shedule_id=s.id) " +
+                            "left join film f on(s.film_id=f.id) " +
+                            "left join hall h on(s.hall_id=h.id) " +
+                            "left join calendar c on(s.calendar_id=c.id) " +
+                            "where t.id=";
+        for (String i :q
+             ) {
+            String createOrder = "select buy_ticket("+i+")";
+            ResultSet order_id=stat.executeQuery(createOrder);
+            order_id.next();
+            int operationId=order_id.getInt(1);
+
+            ResultSet rs=stat.executeQuery(selTickets+i);
+            rs.next();
+
+            ticketList.add(new CheckTicket(
+                    operationId,
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getInt(4),
+                    rs.getInt(5),
+                    rs.getInt(6),
+                    new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(7)),
+                    rs.getString(8)
+            ));
+        }
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("WEB-INF/pages/receipt");
+        modelAndView.addObject("tic",ticketList);
+        return modelAndView;
     }
 
+    @PostMapping("/returnTicket")
+    public ModelAndView retutnTicket(
+            @RequestParam("filter") Integer operation_id, @RequestParam Map<String, Object> model
+    ) throws SQLException {
+        String checkReturnVal = "select return_ticket("+operation_id+")";
+        ResultSet order_id=stat.executeQuery(createOrder);
+        order_id.next();
 
+        String createOrder = "select return_ticket("+operation_id+")";
+        ResultSet order_id=stat.executeQuery(createOrder);
+        order_id.next();
+        ModelAndView modelAndView = new ModelAndView();
+       // modelAndView.setViewName("WEB-INF/pages/receipt");
+       // modelAndView.addObject("tic",ticketList);
+        return modelAndView;
+    }
 }

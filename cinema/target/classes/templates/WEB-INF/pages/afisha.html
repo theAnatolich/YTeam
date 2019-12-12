@@ -8,6 +8,7 @@
     <div th:each="flower, iter : ${FilmSessionList}" >
         <div class="stocke" >
             <span th:utext="${flower.name}" ></span>
+            <button th:utext="${flower.start_time}" onclick=""> </button>
         </div>
 </div>
 </body>
