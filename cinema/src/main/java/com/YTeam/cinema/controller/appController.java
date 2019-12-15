@@ -22,13 +22,27 @@ import java.util.Map;
 
 @Controller
 public class appController {
-    private PSQLConnection connection = new PSQLConnection();
-    private Statement stat=connection.getConnection().createStatement();
+    private PSQLConnection connection ;
 
-
+    private Statement stat;
 
     public appController() throws SQLException {
+        connection = new PSQLConnection();
+        stat=connection.getConnection().createStatement();
     }
+    public appController(boolean l) throws SQLException {    }
+
+    public appController(PSQLConnection connection, Statement stat) {
+        this.connection = connection;
+        this.stat = stat;
+    }
+    public void setConnection(PSQLConnection p) {
+        connection=p;
+    }
+    public void setStat(Statement s) {
+        stat=s;
+    }
+
 
     @GetMapping("/afisha")
     public String getAfisha(
@@ -52,6 +66,8 @@ public class appController {
             @RequestParam(name="name", required=false, defaultValue="World") String name,
             Map<String, Object> model
     ) throws SQLException, ParseException {
+
+
         String q="select * from get_films_shedule";
         ArrayList<FilmSession> FilmSessionList=new ArrayList<FilmSession>();
         ResultSet rs= stat.executeQuery(q);
@@ -163,20 +179,6 @@ public class appController {
         return modelAndView;
     }
 
-    @PostMapping("/returnTicket")
-    public ModelAndView retutnTicket(
-            @RequestParam("filter") Integer operation_id, @RequestParam Map<String, Object> model
-    ) throws SQLException {
-        String checkReturnVal = "select return_ticket("+operation_id+")";
-        ResultSet order_id=stat.executeQuery(createOrder);
-        order_id.next();
 
-        String createOrder = "select return_ticket("+operation_id+")";
-        ResultSet order_id=stat.executeQuery(createOrder);
-        order_id.next();
-        ModelAndView modelAndView = new ModelAndView();
-       // modelAndView.setViewName("WEB-INF/pages/receipt");
-       // modelAndView.addObject("tic",ticketList);
-        return modelAndView;
-    }
+
 }
