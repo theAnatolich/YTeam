@@ -20,12 +20,22 @@ import java.util.*;
 
 @Controller
 public class appController {
-    private PSQLConnection connection = new PSQLConnection();
-    private Statement stat=connection.getConnection().createStatement();
-
-
-
+    private PSQLConnection connection ;
+    private Statement stat;
     public appController() throws SQLException {
+        connection = new PSQLConnection();
+        stat=connection.getConnection().createStatement();
+    }
+    public appController(boolean l) throws SQLException {    }
+    public appController(PSQLConnection connection, Statement stat) {
+        this.connection = connection;
+        this.stat = stat;
+    }
+    public void setConnection(PSQLConnection p) {
+        connection=p;
+    }
+    public void setStat(Statement s) {
+        stat=s;
     }
 
     @GetMapping("/afisha")
@@ -136,31 +146,32 @@ public class appController {
 //        return modelAndView;
 //    }
 
-    @GetMapping("/addFilm")
-    public String admin() {
-        return "WEB-INF/pages/admin";
-    }
-
-    @PostMapping("/addFilm")
-    public ModelAndView postAfisha(@ModelAttribute Film film, Model model) throws SQLException {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("WEB-INF/pages/addFilm");
-        String query="";
-        if(stat.executeQuery(query).getInt(1)==0){
-            modelAndView.addObject("message","Фильм успешно добавлен.");
-        }
-        else {
-            modelAndView.addObject("message","Ошибка добавления");
-        }
-
-        return modelAndView;
-    }
+//    @GetMapping("/addFilm")
+//    public String admin() {
+//        return "WEB-INF/pages/admin";
+//    }
+//
+//    @PostMapping("/addFilm")
+//    public ModelAndView postAfisha(@ModelAttribute Film film, Model model) throws SQLException {
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("WEB-INF/pages/addFilm");
+//        String query="";
+//        if(stat.executeQuery(query).getInt(1)==0){
+//            modelAndView.addObject("message","Фильм успешно добавлен.");
+//        }
+//        else {
+//            modelAndView.addObject("message","Ошибка добавления");
+//        }
+//
+//        return modelAndView;
+//    }
 
     @GetMapping("/SeetSelection")
     public String getSeetSelection(
             @RequestParam(name="shedule_id", required=false, defaultValue="18") int shedule_id,
             Map<String, Object> model
     ) throws SQLException {
+        String getFilmQuery = "select name, photo, day, start_time, age_limit, duration from get_films_shedule where shedule_id="+shedule_id;
         String q="select ID, plase_number,row_number,price,state from ticket  where shedule_id="+shedule_id+" order by row_number,plase_number";
         ArrayList<Sit> sitList = new ArrayList<>();
         ResultSet rs = stat.executeQuery(q);
@@ -197,6 +208,19 @@ public class appController {
             }
         }
 
+        ArrayList<Object> filmParamList = new ArrayList<>();
+        ResultSet resultQuery = stat.executeQuery(getFilmQuery);
+
+        while (resultQuery.next()){
+            filmParamList.add(resultQuery.getString(1));
+            filmParamList.add(resultQuery.getString(2));
+            filmParamList.add(resultQuery.getString(3));
+            filmParamList.add(resultQuery.getString(4));
+            filmParamList.add(Integer.parseInt(String.valueOf(resultQuery.getInt(5))));
+            filmParamList.add(resultQuery.getString(6));
+        }
+
+        model.put("film", filmParamList);
         model.put("sit_num", sit_num);
         return "WEB-INF/pages/SeetSelection";
     }
@@ -219,7 +243,8 @@ public class appController {
     public ModelAndView getSeetSelection(
             @RequestParam("filter") String tickets_id, @RequestParam Map<String, Object> model
     ) throws SQLException, ParseException {
-        ArrayList<CheckTicket> ticketList=new ArrayList<CheckTicket>();
+        Map<String, ArrayList<Object>> map = new HashMap<>();
+
         String[] q=tickets_id.split("!");
         //String upStr="update into ticket set state=1 where id=";
         String selTickets="select t.id,f.name,h.name,t.plase_number,t.row_number,t.price,c.day,c.start_time " +
@@ -228,8 +253,7 @@ public class appController {
                             "left join hall h on(s.hall_id=h.id) " +
                             "left join calendar c on(s.calendar_id=c.id) " +
                             "where t.id=";
-        for (String i :q
-             ) {
+        for (String i : q) {
             String createOrder = "select buy_ticket("+i+")";
             ResultSet order_id=stat.executeQuery(createOrder);
             order_id.next();
@@ -238,38 +262,51 @@ public class appController {
             ResultSet rs=stat.executeQuery(selTickets+i);
             rs.next();
 
-            ticketList.add(new CheckTicket(
-                    operationId,
-                    rs.getString(2),
-                    rs.getString(3),
-                    rs.getInt(4),
-                    rs.getInt(5),
-                    rs.getInt(6),
-                    new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(7)),
-                    rs.getString(8)
-            ));
+//            ticketList.add(new CheckTicket(
+//                    operationId,
+//                    rs.getString(2),
+//                    rs.getString(3),
+//                    rs.getInt(4),
+//                    rs.getInt(5),
+//                    rs.getInt(6),
+//                    new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(7)),
+//                    rs.getString(8)
+//            ));
+
+            ArrayList<Object> ticketList=new ArrayList<>();
+
+            ticketList.add(operationId);
+            ticketList.add(rs.getString(2));
+            ticketList.add(rs.getString(3));
+            ticketList.add(rs.getInt(4));
+            ticketList.add(rs.getInt(5));
+            ticketList.add(rs.getInt(6));
+            ticketList.add(new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(7)));
+            ticketList.add(rs.getString(8));
+
+            map.put(i, ticketList);
         }
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("WEB-INF/pages/receipt");
-        modelAndView.addObject("tic",ticketList);
+        modelAndView.addObject("ticket", map);
         return modelAndView;
     }
 
-    @PostMapping("/returnTicket")
-    public ModelAndView retutnTicket(
-            @RequestParam("filter") Integer operation_id, @RequestParam Map<String, Object> model
-    ) throws SQLException {
-//        String checkReturnVal = "select return_ticket("+operation_id+")";
+//    @PostMapping("/returnTicket")
+//    public ModelAndView retutnTicket(
+//            @RequestParam("filter") Integer operation_id, @RequestParam Map<String, Object> model
+//    ) throws SQLException {
+////        String checkReturnVal = "select return_ticket("+operation_id+")";
+////        ResultSet order_id=stat.executeQuery(createOrder);
+////        order_id.next();
+//
+//        String createOrder = "select return_ticket("+operation_id+")";
 //        ResultSet order_id=stat.executeQuery(createOrder);
 //        order_id.next();
-
-        String createOrder = "select return_ticket("+operation_id+")";
-        ResultSet order_id=stat.executeQuery(createOrder);
-        order_id.next();
-        ModelAndView modelAndView = new ModelAndView();
-       // modelAndView.setViewName("WEB-INF/pages/receipt");
-       // modelAndView.addObject("tic",ticketList);
-        return modelAndView;
-    }
+//        ModelAndView modelAndView = new ModelAndView();
+//       // modelAndView.setViewName("WEB-INF/pages/receipt");
+//       // modelAndView.addObject("tic",ticketList);
+//        return modelAndView;
+//    }
 }
