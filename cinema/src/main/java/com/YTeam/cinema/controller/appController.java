@@ -38,33 +38,14 @@ public class appController {
         stat=s;
     }
 
-    @GetMapping("/afisha")
-    public String getAfisha(
-            @RequestParam(name="name", required=false, defaultValue="World") String name,
-            Map<String, Object> model
-    ) {
-        model.put("name", name);
-        return "WEB-INF/pages/afisha";
-    }
-
-    @PostMapping("/afisha")
-    public String postAfisha(
-            @RequestBody Member member
-    ) {
-        /*overload*/
-        return "WEB-INF/pages/afisha";
-    }
-
     @GetMapping("/")
     public String getFilms(
             Map<String, Object> model
     ) throws SQLException, ParseException {
-        String q="select name, rating, photo, genre, duration, day, age_limit, start_time, shedule_id from get_films_shedule";
-//        ArrayList<Object> films = new ArrayList<>();
+        String q="select name, rating, photo, genre, duration, to_char(day,'dd month') as day, age_limit, start_time, shedule_id, film_id from get_films_shedule order by day, start_time";
         ResultSet rs = stat.executeQuery(q);
         Map<String, HashMap<String, ArrayList<Object>>> days = new HashMap<>();
         Map<String, Map<String, HashMap<Integer, String>>> schedule = new HashMap<>();
-//        Map<String, ArrayList<Object>> schedule = new HashMap<>();
 
         while (rs.next()){
             ArrayList<Object> list = new ArrayList<>();
@@ -73,15 +54,11 @@ public class appController {
             list.add(rs.getString(4));
             list.add(rs.getString(5));
             list.add(rs.getString(7));
-//            Map<Integer, String> start_time = new HashMap<>();
-//            Map<String, Object> time = new HashMap<>();
-//            start_time.put(rs.getInt(9), rs.getString(8));
-//            time.put("time", start_time);
-//            list.add(time);
+            list.add(rs.getInt(10));
+
             String name = rs.getString(1);
             String day = rs.getString(6);
             HashMap<String, HashMap<Integer, String>> nameFilm = new HashMap<>();
-
 
             if (!days.containsKey(day) || days.isEmpty()) {
                 HashMap<String, ArrayList<Object>> nameMap = new HashMap<>();
@@ -90,14 +67,12 @@ public class appController {
             } else {
                 if (!days.get(day).containsKey(name)) {
                     days.get(day).put(name, list);
-                } else {
-//                    kek = days.get(day).get(name).get(days.get(day).get(name).size()-1)[0].get("time").put(she);
                 }
             }
 
             if (!schedule.containsKey(day) || schedule.isEmpty()) {
                 HashMap<Integer, String> scheduleId = new HashMap<>();
-                scheduleId.put(rs.getInt(9), rs.getString(8));
+                scheduleId.put(rs.getInt(9), rs.getString(8).substring(0, 5));
                 nameFilm.put(name, scheduleId);
                 schedule.put(day, nameFilm);
             } else {
@@ -108,46 +83,21 @@ public class appController {
                     scheduleId.put(rs.getInt(9), rs.getString(8).substring(0, 5));
                     schedule.get(day).put(name, scheduleId);
                 }
-//                schedule.get(day).get(start_time.get(0));
             }
         }
 
-//        ArrayList<String> seances = new ArrayList<>();
-//        Map<String, ArrayList<String>> days = new HashMap<>();
-//        Map<String, Map<String, ArrayList<String>>> map = new HashMap<>();
-//
-//        for (FilmSession list: FilmSessionList) {
-//            if (!map.containsKey(list.name)) {
-////                map.put(list.name, )
-//                seances.add(list.start_time);
-//                days.put(list.day.toString(), seances);
-//                map.put(list.name, days);
-//            }
-//        }
-
-//        JsonArray jsonArray1 = new Gson().toJsonTree(FilmSessionList).getAsJsonArray();
-
-//        System.out.println(jsonArray1);
-//        for (FilmSession film: FilmSessionList) {
-//
-//        }
-
         model.put("schedule", schedule);
         model.put("days", days);
-//        model.put("kek", kek);
         return "WEB-INF/pages/afisha";
     }
 
-//    @RequestMapping("/")
-//    public ModelAndView index () {
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("index");
-//        modelAndView.setView();
-//        return modelAndView;
-//    }
+    @GetMapping("/login")
+    public String login() {
+        return "WEB-INF/pages/login";
+    }
 
 //    @GetMapping("/addFilm")
-//    public String admin() {
+//    public String addFilm() {
 //        return "WEB-INF/pages/admin";
 //    }
 //
@@ -225,6 +175,29 @@ public class appController {
         return "WEB-INF/pages/SeetSelection";
     }
 
+    @GetMapping("/description")
+    public String getFilmDescription(
+            @RequestParam(name="film_id", required=false) int film_id,
+            Map<String, Object> model
+    ) throws SQLException {
+        String getFilmQuery = "select name,photo,age_limit,duration,director,genre,description from get_films_shedule where film_id="+film_id+" limit 1";
+        ArrayList<Object> film = new ArrayList<>();
+        ResultSet result = stat.executeQuery(getFilmQuery);
+
+        while (result.next()){
+            film.add(result.getString(1));
+            film.add(result.getString(2));
+            film.add(result.getInt(3));
+            film.add(result.getInt(4));
+            film.add(result.getString(5));
+            film.add(result.getString(6));
+            film.add(result.getString(7));
+        }
+
+        model.put("film", film);
+        return "WEB-INF/pages/filmDescription";
+    }
+
 //    @GetMapping("/receipt")
 //    public String receipt(
 //            @RequestParam(name="tic", required=false, defaultValue="") String tickets,
@@ -246,7 +219,6 @@ public class appController {
         Map<String, ArrayList<Object>> map = new HashMap<>();
 
         String[] q=tickets_id.split("!");
-        //String upStr="update into ticket set state=1 where id=";
         String selTickets="select t.id,f.name,h.name,t.plase_number,t.row_number,t.price,c.day,c.start_time " +
                             "from ticket t left join shedule s on(t.shedule_id=s.id) " +
                             "left join film f on(s.film_id=f.id) " +

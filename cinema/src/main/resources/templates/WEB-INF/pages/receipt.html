@@ -8,6 +8,11 @@
     </head>
     <body>
         <div class="container">
+            <div id="headerReceipt" class="border-bottom">
+                <img th:src="@{/img/{imageName}(imageName = arrowWhite.png)}" id="arrowWhite" onclick="window.location.href = '/'"/>
+                YTeamCinema
+            </div>
+
             <h4 class="mt-4 mb-4">Спасибо, что пользуетесь услугами Кинотеантра YTeamCinema</h4>
 
             <div class="ticket mt-4 mb-2" th:each="el : ${ticket}">

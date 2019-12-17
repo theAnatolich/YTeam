@@ -21,11 +21,15 @@ body {
     text-align: center;
     white-space: nowrap;
     vertical-align: middle;
+    margin-left: 85%;
+    border: 1px solid transparent;
 }
 
 .btnPanel {
     background-color: #343a40 !important;
     border-top: #979797 solid 1px;
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 
 .padding {
@@ -38,9 +42,14 @@ body {
     width: 15px;
     top: 10px;
     left: 30px;
+    transform: rotate(90deg);
 }
 
 .background-color {
+    background-color: rgba(0,0,0,.7);
+}
+
+.background-color-darker {
     background-color: rgba(0,0,0,.7);
 }
 
@@ -86,4 +95,8 @@ body {
     background-color: cornflowerblue !important;
     border: none;
     color: #ebebeb;
+}
+
+.bought:hover {
+    border: none !important;
 }

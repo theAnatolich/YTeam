@@ -43,9 +43,15 @@ public class ReturnTicketController {
 
         ResultSet rs= stat.executeQuery(q);
         rs.next();
-        if (rs.getInt(1)==0){
+        if (rs.getInt(1) == 0){
 
             modelAndView.addObject("state","Билет был возвращен!");
+            return modelAndView;
+        }
+
+        if (rs.getInt(1) == 5){
+
+            modelAndView.addObject("state","Билет не может быть возвращен!");
             return modelAndView;
         }
         modelAndView.addObject("state","Данный билет не может быть возвращен! \n Обратитесь к администратору");
