@@ -4,6 +4,22 @@ body {
     font-size: small;
 }
 
+#returnTicket {
+    position: absolute;
+    color: #FFFFFF;
+    left: 12%;
+}
+
+.filmName a {
+    color: white;
+    text-decoration: none;
+}
+
+.filmName a:hover {
+    color: cornflowerblue;
+    text-decoration: none;
+}
+
 #arrowWhite {
     position: absolute;
     width: 15px;

@@ -2,6 +2,7 @@
 //
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
+//import org.springframework.http.HttpMethod;
 //import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 //import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 //import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -21,6 +22,9 @@
 //                .antMatchers("/img/**").permitAll()
 //                .antMatchers("/js/**").permitAll()
 //                .antMatchers("/SeetSelection").permitAll()
+//                .antMatchers("/description").permitAll()
+//                .antMatchers("/returnTicket").permitAll()
+//                .antMatchers("/receipt").permitAll()
 //                .antMatchers("/").permitAll()
 //                .anyRequest().authenticated()
 //                .and()
@@ -37,8 +41,8 @@
 //    public UserDetailsService userDetailsService() {
 //        UserDetails user =
 //                User.withDefaultPasswordEncoder()
-//                        .username("kek")
-//                        .password("kek")
+//                        .username("admin")
+//                        .password("IalwaysLoveYou")
 //                        .roles("USER")
 //                        .build();
 //

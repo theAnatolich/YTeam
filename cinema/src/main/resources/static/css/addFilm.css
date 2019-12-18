@@ -1,15 +1,18 @@
 body {
-    color: #ebebeb;
     background-color: #212226;
+    color: #ebebeb;
 }
 
-#headerReturnTicket {
+.border-bottom-header {
+    border-bottom: #979797 solid 1px;
+}
+
+#headerAddFilm {
     background-color: #202226 !important;
     text-align: center;
     height: 35px;
     min-height: min-content;
     line-height: 35px;
-    color: white;
 }
 
 #arrowWhite {
@@ -18,8 +21,4 @@ body {
     top: 10px;
     left: 30px;
     transform: rotate(90deg);
-}
-
-.border-bottom-header {
-    border-bottom: #979797 solid 1px;
 }

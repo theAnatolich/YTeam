@@ -3,14 +3,14 @@
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <!--    <div th:fragment="head">-->
-            <link rel="stylesheet" href="../static/css/afisha.css" th:href="@{/css/afisha.css}">
-    <!--    </div>-->
+        <link rel="stylesheet" href="../static/css/afisha.css" th:href="@{/css/afisha.css}">
+
         <title>Кинотеатр</title>
     </head>
     <body>
         <div id="headerSchedule" class="border-bottom-header">
             <img th:src="@{/img/{imageName}(imageName = arrowWhite.png)}" id="arrowWhite" onclick="window.location.href = '/addFilm'"/>
+            <a id="returnTicket" href="/returnTicket">Возврат билета</a>
             YTeamCinema
         </div>
 
@@ -21,7 +21,7 @@
                 <section class="tab-content">
                     <div class="row border-bottom" th:each="film : ${day.value}">
                         <div class="col-4 row">
-                            <div class="col-6 mb-3">
+                            <div class="col-6 mb-3 filmName">
                                 <a th:href="'/description?film_id=' + ${film.value[5]}">
                                     <div th:utext="${film.key}"></div>
                                 </a>
@@ -51,10 +51,6 @@
                     </div>
                 </section>
             </div>
-        </div>
-
-        <div>
-            <a href="/returnTicket">Возврат билета</a>
         </div>
     </body>
 </html>

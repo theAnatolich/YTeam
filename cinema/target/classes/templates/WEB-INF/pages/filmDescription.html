@@ -15,16 +15,16 @@
         <div class="container mt-5">
             <div>
                 <div class="row">
-                    <div class="col-6"><h4 th:utext="${film[0]}"></h4></div>
+                    <div class="col-4"><h4 th:utext="${film[0]}"></h4></div>
                     <div class="col-2"><div class="film-rating ml-4"><span th:utext="${film[2]}+'+'"></span></div></div>
                 </div>
 
-                <div class="row">
+                <div class="row pt-3">
                     <div class="col-3"><img class="filmPhoto" th:src="@{/img/{imgName}(imgName = ${film[1]})}" /></div>
                     <div class="col-9">
-                        <div th:utext="'Продолжительность: ' + ${film[3]} + ' мин.'"></div>
-                        <div th:utext="'Жанр: ' + ${film[5]}"></div>
-                        <div th:utext="'Режиссер: ' + ${film[4]}"></div>
+                        <div class="pt-4" th:utext="'Продолжительность: ' + ${film[3]} + ' мин.'"></div>
+                        <div class="pt-2" th:utext="'Жанр: ' + ${film[5]}"></div>
+                        <div class="pt-2" th:utext="'Режиссер: ' + ${film[4]}"></div>
                         <div class="mt-5" th:utext="${film[6]}"></div>
                     </div>
                 </div>

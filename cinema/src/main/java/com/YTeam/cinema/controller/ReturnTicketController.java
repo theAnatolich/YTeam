@@ -2,10 +2,7 @@ package com.YTeam.cinema.controller;
 
 import com.YTeam.cinema.FilmSession;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import postgresql.PSQLConnection;
 
@@ -35,7 +32,7 @@ public class ReturnTicketController {
 
     @PostMapping("/returnTicket")
     public ModelAndView postAfisha(
-            @RequestParam Integer id
+            @ModelAttribute("id") Integer id
     ) throws SQLException {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("WEB-INF/pages/returnTicket");
@@ -54,7 +51,7 @@ public class ReturnTicketController {
             modelAndView.addObject("state","Билет не может быть возвращен!");
             return modelAndView;
         }
-        modelAndView.addObject("state","Данный билет не может быть возвращен! \n Обратитесь к администратору");
+//        modelAndView.addObject("state","Данный билет не может быть возвращен! \n Обратитесь к администратору");
         return modelAndView;
     }
 

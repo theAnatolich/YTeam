@@ -3,6 +3,12 @@ body {
     color: white;
 }
 
+.white-box {
+    border: 1px solid white;
+    border-radius: .25em;
+    padding: 15px;
+}
+
 #headerFilmDesc {
     background-color: #202226 !important;
     text-align: center;
