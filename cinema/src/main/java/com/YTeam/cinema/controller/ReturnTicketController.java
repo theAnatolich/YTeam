@@ -17,7 +17,11 @@ import java.util.Map;
 public class ReturnTicketController {
     private PSQLConnection connection ;
     private Statement stat;
-
+    public ReturnTicketController( boolean i)  {
+    }
+    public void setStat(Statement s) {
+        stat=s;
+    }
     public ReturnTicketController() throws SQLException {
         this.connection = new PSQLConnection();
         this.stat = connection.getConnection().createStatement();
@@ -53,7 +57,7 @@ public class ReturnTicketController {
             modelAndView.addObject("state","Билет не может быть возвращен!");
             return modelAndView;
         }
-//        modelAndView.addObject("state","Данный билет не может быть возвращен! \n Обратитесь к администратору");
+       modelAndView.addObject("state","Данный билет не может быть возвращен! \n Обратитесь к администратору");
         return modelAndView;
     }
 

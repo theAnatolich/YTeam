@@ -22,6 +22,10 @@ public class AddFilmController {
         this.connection = new PSQLConnection();
         this.stat=connection.getConnection().createStatement();
     }
+    public AddFilmController( boolean i){    }
+    public void setStat(Statement s) {
+        stat=s;
+    }
 
     @GetMapping("/addFilm")
     public String getAfisha(

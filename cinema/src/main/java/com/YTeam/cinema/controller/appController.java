@@ -26,7 +26,7 @@ public class appController {
         connection = new PSQLConnection();
         stat=connection.getConnection().createStatement();
     }
-    public appController(boolean l) throws SQLException {    }
+    public appController(boolean l) {    }
     public appController(PSQLConnection connection, Statement stat) {
         this.connection = connection;
         this.stat = stat;
