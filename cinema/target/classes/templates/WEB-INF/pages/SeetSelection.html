@@ -57,6 +57,7 @@
         </div>
         <div class="btnPanel">
             <form method="post" action="/SeetSelection">
+                <input type="hidden" th:attr="name=${_csrf.parameterName},value=${_csrf.token}"/>
                 <input id="-1" type="hidden" name="filter">
                 <button id="buyBtn" type="submit" onclick="getTickets_id()">Купить</button>
             </form>

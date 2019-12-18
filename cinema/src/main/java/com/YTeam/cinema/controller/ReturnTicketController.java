@@ -40,6 +40,8 @@ public class ReturnTicketController {
 
         ResultSet rs= stat.executeQuery(q);
         rs.next();
+        Object kek = rs.getInt(1);
+
         if (rs.getInt(1) == 0){
 
             modelAndView.addObject("state","Билет был возвращен!");
