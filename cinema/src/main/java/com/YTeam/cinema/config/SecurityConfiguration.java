@@ -25,7 +25,7 @@
 //                .antMatchers("/description").permitAll()
 //                .antMatchers("/returnTicket").permitAll()
 //                .antMatchers("/receipt").permitAll()
-//                .antMatchers("/").permitAll()
+//                .antMatchers("/**").permitAll()
 //                .anyRequest().authenticated()
 //                .and()
 //                .formLogin()

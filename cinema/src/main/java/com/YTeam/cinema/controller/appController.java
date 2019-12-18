@@ -44,8 +44,8 @@ public class appController {
     ) throws SQLException, ParseException {
         String q="select name, rating, photo, genre, duration, to_char(day,'dd month') as day, age_limit, start_time, shedule_id, film_id from get_films_shedule order by day, start_time";
         ResultSet rs = stat.executeQuery(q);
-        Map<String, HashMap<String, ArrayList<Object>>> days = new HashMap<>();
-        Map<String, Map<String, HashMap<Integer, String>>> schedule = new HashMap<>();
+        Map<String, TreeMap<String, ArrayList<Object>>> days = new TreeMap<>();
+        Map<String, Map<String, TreeMap<Integer, String>>> schedule = new TreeMap<>();
 
         while (rs.next()){
             ArrayList<Object> list = new ArrayList<>();
@@ -58,10 +58,10 @@ public class appController {
 
             String name = rs.getString(1);
             String day = rs.getString(6);
-            HashMap<String, HashMap<Integer, String>> nameFilm = new HashMap<>();
+            TreeMap<String, TreeMap<Integer, String>> nameFilm = new TreeMap<>();
 
             if (!days.containsKey(day) || days.isEmpty()) {
-                HashMap<String, ArrayList<Object>> nameMap = new HashMap<>();
+                TreeMap<String, ArrayList<Object>> nameMap = new TreeMap<>();
                 nameMap.put(name, list);
                 days.put(day, nameMap);
             } else {
@@ -71,7 +71,7 @@ public class appController {
             }
 
             if (!schedule.containsKey(day) || schedule.isEmpty()) {
-                HashMap<Integer, String> scheduleId = new HashMap<>();
+                TreeMap<Integer, String> scheduleId = new TreeMap<>();
                 scheduleId.put(rs.getInt(9), rs.getString(8).substring(0, 5));
                 nameFilm.put(name, scheduleId);
                 schedule.put(day, nameFilm);
@@ -79,7 +79,7 @@ public class appController {
                 try {
                     schedule.get(day).get(name).put(rs.getInt(9), rs.getString(8).substring(0, 5));
                 } catch (Exception e) {
-                    HashMap<Integer, String> scheduleId = new HashMap<>();
+                    TreeMap<Integer, String> scheduleId = new TreeMap<>();
                     scheduleId.put(rs.getInt(9), rs.getString(8).substring(0, 5));
                     schedule.get(day).put(name, scheduleId);
                 }

@@ -16,7 +16,7 @@
 
         <div class="tabs container-fluid">
             <div class="tab" th:each="day, dayItem : ${days}">
-                <input type="radio" th:id="${dayItem.count}" name="tab-group" checked>
+                <input type="radio" th:id="${dayItem.count}" name="tab-group" >
                 <label th:for="${dayItem.count}" class="tab-title" th:utext="${day.key}"></label>
                 <section class="tab-content">
                     <div class="row border-bottom" th:each="film : ${day.value}">
@@ -52,5 +52,7 @@
                 </section>
             </div>
         </div>
+
+        <script th:src="@{/js/afisha.js}"></script>
     </body>
 </html>
