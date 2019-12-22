@@ -1,6 +1,8 @@
 package com.YTeam.cinema.controller;
 
+import com.YTeam.cinema.CheckBuyTicket;
 import com.YTeam.cinema.CheckTicket;
+import com.YTeam.cinema.Payment;
 import com.YTeam.cinema.models.Film;
 import com.YTeam.cinema.models.Sit;
 import org.springframework.stereotype.Controller;
@@ -215,9 +217,8 @@ public class appController {
     @PostMapping("/SeetSelection")
     public ModelAndView getSeetSelection(
             @RequestParam("filter") String tickets_id, @RequestParam Map<String, Object> model
-    ) throws SQLException, ParseException {
+    ) throws SQLException, ParseException, InterruptedException {
         Map<String, ArrayList<Object>> map = new HashMap<>();
-
         String[] q=tickets_id.split("!");
         String selTickets="select t.id,f.name,h.name,t.plase_number,t.row_number,t.price,c.day,c.start_time " +
                             "from ticket t left join shedule s on(t.shedule_id=s.id) " +
@@ -229,24 +230,17 @@ public class appController {
             String createOrder = "select buy_ticket("+i+")";
             ResultSet order_id=stat.executeQuery(createOrder);
             order_id.next();
-            int operationId=order_id.getInt(1);
 
+            CheckBuyTicket a=new CheckBuyTicket();
+            a.op_id=Integer.valueOf(order_id.getInt(1));
+            Thread myThready = new Thread(a);
+            myThready.start();
+
+
+            int operationId=order_id.getInt(1);
             ResultSet rs=stat.executeQuery(selTickets+i);
             rs.next();
-
-//            ticketList.add(new CheckTicket(
-//                    operationId,
-//                    rs.getString(2),
-//                    rs.getString(3),
-//                    rs.getInt(4),
-//                    rs.getInt(5),
-//                    rs.getInt(6),
-//                    new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(7)),
-//                    rs.getString(8)
-//            ));
-
             ArrayList<Object> ticketList=new ArrayList<>();
-
             ticketList.add(operationId);
             ticketList.add(rs.getString(2));
             ticketList.add(rs.getString(3));
@@ -259,9 +253,19 @@ public class appController {
             map.put(i, ticketList);
         }
 
+        if(Payment.ticketPayment())
+            for (String i : q) {
+                Object a=map.get(i).get(0);
+                PSQLConnection.purchaseConfirmation(Integer.valueOf(a.toString()));
+            }
+        else throw new RuntimeException();
+
+
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("WEB-INF/pages/receipt");
         modelAndView.addObject("ticket", map);
+
+
         return modelAndView;
     }
 

@@ -44,15 +44,15 @@ public class ReturnTicketController {
 
         ResultSet rs= stat.executeQuery(q);
         rs.next();
-        Object kek = rs.getInt(1);
+        int kek = rs.getInt(1);
 
-        if (rs.getInt(1) == 0){
+        if (/*rs.getInt(1)*/kek == 0){
 
             modelAndView.addObject("state","Билет был возвращен!");
             return modelAndView;
         }
 
-        if (rs.getInt(1) == 5){
+        if (/*rs.getInt(1)*/kek == 5){
 
             modelAndView.addObject("state","Билет не может быть возвращен!");
             return modelAndView;

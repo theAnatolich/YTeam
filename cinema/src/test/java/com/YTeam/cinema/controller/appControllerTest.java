@@ -137,8 +137,7 @@ public class appControllerTest {
     }
 
     @Test
-    public void getSeetSelection_Test_String() throws SQLException, ParseException
-    {
+    public void getSeetSelection_Test_String() throws SQLException, ParseException, InterruptedException {
         Statement statMock = Mockito.mock(Statement.class);
         ResultSet resMock = Mockito.mock(ResultSet.class);
         ResultSet resMock1 = Mockito.mock(ResultSet.class);

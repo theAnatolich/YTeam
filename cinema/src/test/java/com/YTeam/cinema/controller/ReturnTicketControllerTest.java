@@ -45,7 +45,7 @@ public class ReturnTicketControllerTest {
         Mockito.when(statMock.executeQuery(s)).thenReturn(resMock);
 
         Mockito.when(resMock.next()).thenReturn(true);
-        Mockito.when(resMock.getInt(1)).thenReturn(1,1,0,5);
+        Mockito.when(resMock.getInt(1)).thenReturn(1,0,5);
 
         ticketContr.setStat(statMock);
 
@@ -55,7 +55,7 @@ public class ReturnTicketControllerTest {
         boolean a=model2.getModel().get("state").equals("Билет был возвращен!");
         Assert.assertTrue("Test - postAfisha: Error!",
                 model1.getModel().get("state").equals("Данный билет не может быть возвращен! \n Обратитесь к администратору") &&
-                        //model2.getModel().get("state").equals("Билет был возвращен!") && нужно подкинуть операцию на билет который можно вернуть(временное ограничение)
+                        model2.getModel().get("state").equals("Билет был возвращен!") &&
                         model3.getModel().get("state").equals("Билет не может быть возвращен!"));
 
     }
