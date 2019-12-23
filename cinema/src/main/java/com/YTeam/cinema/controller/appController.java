@@ -182,7 +182,7 @@ public class appController {
             @RequestParam(name="film_id", required=false) int film_id,
             Map<String, Object> model
     ) throws SQLException {
-        String getFilmQuery = "select name,photo,age_limit,duration,director,genre,description from get_films_shedule where film_id="+film_id+" limit 1";
+        String getFilmQuery = "select name,photo,age_limit,duration,director,genre,description,actors,movie from get_films_shedule where film_id="+film_id+" limit 1";
         ArrayList<Object> film = new ArrayList<>();
         ResultSet result = stat.executeQuery(getFilmQuery);
 
@@ -194,6 +194,8 @@ public class appController {
             film.add(result.getString(5));
             film.add(result.getString(6));
             film.add(result.getString(7));
+            film.add(result.getString(8));
+            film.add(result.getString(9));
         }
 
         model.put("film", film);

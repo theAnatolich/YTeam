@@ -36,10 +36,6 @@
                         <input type="text" name="cast" class="form-control" id="filmCast" placeholder="Введите актеров фильма">
                     </div>
                     <div class="col-6 form-group mb-2">
-                        <label for="filmDesc" class="sr-only">Введите описание фильма</label>
-                        <textarea type="text" name="description" class="form-control" id="filmDesc" placeholder="Введите описание фильма"></textarea>
-                    </div>
-                    <div class="col-6 form-group mb-2">
                         <label for="filmPhoto" class="sr-only">Введите название файла с постером</label>
                         <input type="text" name="photo" class="form-control" id="filmPhoto" placeholder="Введите название файла с постером">
                     </div>
@@ -57,11 +53,15 @@
                     </div>
                     <div class="col-6 form-group mb-2">
                         <label for="filmDuration" class="sr-only">Введите длительность фильма</label>
-                        <input type="number" name="duration" class="form-control" id="filmDuration" placeholder="Введите длительность фильма">
+                        <input type="number" min="0" max="1000" name="duration" class="form-control" id="filmDuration" placeholder="Введите длительность фильма">
                     </div>
                     <div class="col-6 form-group mb-2">
                         <label for="filmAgeLimit" class="sr-only">Введите возрастное ограничение фильма</label>
-                        <input type="number" name="ageLimit" class="form-control" id="filmAgeLimit" placeholder="Введите возрастное ограничение фильма">
+                        <input type="number" min="0" name="ageLimit" class="form-control" id="filmAgeLimit" placeholder="Введите возрастное ограничение фильма">
+                    </div>
+                    <div class="col-6 form-group mb-2">
+                        <label for="filmDesc" class="sr-only">Введите описание фильма</label>
+                        <textarea type="text" name="description" class="form-control" id="filmDesc" placeholder="Введите описание фильма"></textarea>
                     </div>
                 </div>
                 <br/>

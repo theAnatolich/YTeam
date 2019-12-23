@@ -3,6 +3,20 @@ body {
     color: white;
 }
 
+img {
+    width: 100%;
+}
+
+.headerLink {
+    color: white;
+    text-decoration: none;
+}
+
+.headerLink:hover {
+    color: cornflowerblue;
+    text-decoration: none;
+}
+
 .white-box {
     border: 1px solid white;
     border-radius: .25em;

@@ -4,10 +4,24 @@ body {
     font-size: small;
 }
 
+.headerLink {
+    color: white;
+    text-decoration: none;
+}
+
+.headerLink:hover {
+    color: cornflowerblue;
+    text-decoration: none;
+}
+
 #returnTicket {
     position: absolute;
     color: #FFFFFF;
     left: 12%;
+}
+
+.filmPhoto {
+    width: 220px;
 }
 
 .filmName a {

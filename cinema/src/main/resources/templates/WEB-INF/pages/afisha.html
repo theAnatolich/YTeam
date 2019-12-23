@@ -11,7 +11,7 @@
         <div id="headerSchedule" class="border-bottom-header">
             <img th:src="@{/img/{imageName}(imageName = arrowWhite.png)}" id="arrowWhite" onclick="window.location.href = '/addFilm'"/>
             <a id="returnTicket" href="/returnTicket">Возврат билета</a>
-            YTeamCinema
+            <a class="headerLink" href="/">YTeamCinema</a>
         </div>
 
         <div class="tabs container-fluid">
@@ -30,7 +30,14 @@
                                 <div class="ratingGreen" th:if="${film.value[0] >= 7}"><span th:utext="${film.value[0]}"></span></div>
                                 <div class="ratingGrey" th:unless="${film.value[0] >= 7}"><span th:utext="${film.value[0]}"></span></div>
                             </div>
-                            <div class="col-12"><img class="filmPhoto" th:src="@{/img/{imgName}(imgName = ${film.value[1]})}" /></div>
+                            <div class="col-12">
+                                <a th:href="'/description?film_id=' + ${film.value[5]}">
+                                    <img
+                                        class="filmPhoto"
+                                        th:src="@{/img/{imgName}(imgName = ${film.value[1]})}"
+                                    />
+                                </a>
+                            </div>
                             <div class="col-12 row mt-3">
                                 <div class="col-6">
                                     <div th:utext="${film.value[2]}"></div>
@@ -39,7 +46,11 @@
                                 <div class="col-6"><div class="film-rating ml-4"><span th:utext="${film.value[4]}+'+'"></span></div></div>
                             </div>
                         </div>
-                        <div class="col-8 mt-5">
+<!--                        <div class="col-1 mt-5">-->
+<!--                            <div><strong>2D</strong></div>-->
+<!--                            <div><strong>3D</strong></div>-->
+<!--                        </div>-->
+                        <div class="col-7 mt-5">
                             <a
                                     class="ml-3 schedule"
                                     th:each="time : ${schedule.get(day.key).get(film.key)}"

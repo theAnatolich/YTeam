@@ -7,7 +7,7 @@ public class PSQLConnection {
     /*wifi 192.168.0.107
           cable 192.168.0.103
         * */
-    private static String DB_URL = "jdbc:postgresql://127.0.0.1:64000/cinema";
+    private static String DB_URL = "jdbc:postgresql://192.168.0.103:64000/cinema";
     private static String USER = "pg";
     private static String PASS = "12345678";
 
