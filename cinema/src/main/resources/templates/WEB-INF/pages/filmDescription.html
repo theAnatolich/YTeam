@@ -22,6 +22,9 @@
                 <div class="row pt-3">
                     <div class="col-3"><img class="filmPhoto" th:src="@{/img/{imgName}(imgName = ${film[1]})}" /></div>
                     <div class="col-9">
+                        <div class="pt-4">
+                            <a class="btn-gobuy" th:href="'/oneFilmSeance?film_id='+${film[9]}">Купить билет</a>
+                        </div>
                         <div class="pt-4" th:utext="'Продолжительность: ' + ${film[3]} + ' мин.'"></div>
                         <div class="pt-2" th:utext="'Жанр: ' + ${film[5]}"></div>
                         <div class="pt-2" th:utext="'Режиссер: ' + ${film[4]}"></div>

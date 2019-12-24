@@ -51,7 +51,7 @@ public class appController {
 
         while (rs.next()){
             ArrayList<Object> list = new ArrayList<>();
-            list.add(Integer.parseInt(rs.getString(2)));
+            list.add(Double.parseDouble(rs.getString(2)));
             list.add(rs.getString(3));
             list.add(rs.getString(4));
             list.add(rs.getString(5));
@@ -93,6 +93,60 @@ public class appController {
         return "WEB-INF/pages/afisha";
     }
 
+    @GetMapping("/oneFilmSeance")
+    public String getOneFilm(
+            @RequestParam(name="film_id", required=false, defaultValue="4") int film_id,
+            Map<String, Object> model
+    ) throws SQLException, ParseException {
+        String q = "select name, rating, photo, genre, duration, to_char(day,'dd month') as day, age_limit, start_time, shedule_id, film_id from get_films_shedule where film_id="+film_id+" order by day, start_time";
+        ResultSet res = stat.executeQuery(q);
+        Map<String, TreeMap<String, ArrayList<Object>>> days = new TreeMap<>();
+        Map<String, Map<String, TreeMap<Integer, String>>> schedule = new TreeMap<>();
+
+        while (res.next()){
+            ArrayList<Object> list = new ArrayList<>();
+            list.add(Integer.parseInt(res.getString(2)));
+            list.add(res.getString(3));
+            list.add(res.getString(4));
+            list.add(res.getString(5));
+            list.add(res.getString(7));
+            list.add(res.getInt(10));
+
+            String name = res.getString(1);
+            String day = res.getString(6);
+            TreeMap<String, TreeMap<Integer, String>> nameFilm = new TreeMap<>();
+
+            if (!days.containsKey(day) || days.isEmpty()) {
+                TreeMap<String, ArrayList<Object>> nameMap = new TreeMap<>();
+                nameMap.put(name, list);
+                days.put(day, nameMap);
+            } else {
+                if (!days.get(day).containsKey(name)) {
+                    days.get(day).put(name, list);
+                }
+            }
+
+            if (!schedule.containsKey(day) || schedule.isEmpty()) {
+                TreeMap<Integer, String> scheduleId = new TreeMap<>();
+                scheduleId.put(res.getInt(9), res.getString(8).substring(0, 5));
+                nameFilm.put(name, scheduleId);
+                schedule.put(day, nameFilm);
+            } else {
+                try {
+                    schedule.get(day).get(name).put(res.getInt(9), res.getString(8).substring(0, 5));
+                } catch (Exception e) {
+                    TreeMap<Integer, String> scheduleId = new TreeMap<>();
+                    scheduleId.put(res.getInt(9), res.getString(8).substring(0, 5));
+                    schedule.get(day).put(name, scheduleId);
+                }
+            }
+        }
+
+        model.put("schedule", schedule);
+        model.put("days", days);
+        return "WEB-INF/pages/oneFilmSeance";
+    }
+
     @GetMapping("/login")
     public String login() {
         return "WEB-INF/pages/login";
@@ -123,7 +177,7 @@ public class appController {
             @RequestParam(name="shedule_id", required=false, defaultValue="18") int shedule_id,
             Map<String, Object> model
     ) throws SQLException {
-        String getFilmQuery = "select name, photo, day, start_time, age_limit, duration from get_films_shedule where shedule_id="+shedule_id;
+        String getFilmQuery = "select name, photo, to_char(day,'dd month'), start_time, age_limit, duration from get_films_shedule where shedule_id="+shedule_id;
         String q="select ID, plase_number,row_number,price,state from ticket  where shedule_id="+shedule_id+" order by row_number,plase_number";
         ArrayList<Sit> sitList = new ArrayList<>();
         ResultSet rs = stat.executeQuery(q);
@@ -167,7 +221,7 @@ public class appController {
             filmParamList.add(resultQuery.getString(1));
             filmParamList.add(resultQuery.getString(2));
             filmParamList.add(resultQuery.getString(3));
-            filmParamList.add(resultQuery.getString(4));
+            filmParamList.add(resultQuery.getString(4).substring(0, 5));
             filmParamList.add(Integer.parseInt(String.valueOf(resultQuery.getInt(5))));
             filmParamList.add(resultQuery.getString(6));
         }
@@ -182,7 +236,7 @@ public class appController {
             @RequestParam(name="film_id", required=false) int film_id,
             Map<String, Object> model
     ) throws SQLException {
-        String getFilmQuery = "select name,photo,age_limit,duration,director,genre,description,actors,movie from get_films_shedule where film_id="+film_id+" limit 1";
+        String getFilmQuery = "select name,photo,age_limit,duration,director,genre,description,actors,movie,film_id from get_films_shedule where film_id="+film_id+" limit 1";
         ArrayList<Object> film = new ArrayList<>();
         ResultSet result = stat.executeQuery(getFilmQuery);
 
@@ -196,6 +250,7 @@ public class appController {
             film.add(result.getString(7));
             film.add(result.getString(8));
             film.add(result.getString(9));
+            film.add(result.getInt(10));
         }
 
         model.put("film", film);
@@ -250,7 +305,7 @@ public class appController {
             ticketList.add(rs.getInt(5));
             ticketList.add(rs.getInt(6));
             ticketList.add(new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(7)));
-            ticketList.add(rs.getString(8));
+            ticketList.add(rs.getString(8).substring(0, 5));
 
             map.put(i, ticketList);
         }

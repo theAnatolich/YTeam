@@ -120,19 +120,21 @@ body {
 }
 
 .ratingGreen {
-    width: 30px;
+    width: 40px;
     height: 18px;
     line-height: 18px;
     background-color: limegreen;
     text-align: center;
     border-radius: 2px;
+    min-width: min-content;
 }
 
 .ratingGrey {
-    width: 30px;
+    width: 40px;
     height: 18px;
     line-height: 18px;
     background-color: grey;
     text-align: center;
     border-radius: 2px;
+    min-width: min-content;
 }

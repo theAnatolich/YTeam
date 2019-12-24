@@ -57,7 +57,7 @@ public class PSQLConnection {
 
     public static void purchaseConfirmation(int op_id) throws SQLException {
         Statement stat=connectionST.createStatement();
-        String qu="update table operation set state=3 where  id="+op_id;
+        String qu="update operation set state=3 where  id="+op_id;
         stat.executeUpdate(qu);
     }
 

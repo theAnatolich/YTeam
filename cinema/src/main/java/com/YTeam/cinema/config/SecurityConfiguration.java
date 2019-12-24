@@ -25,6 +25,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/description**").permitAll()
                 .antMatchers("/returnTicket**").permitAll()
                 .antMatchers("/receipt**").permitAll()
+                .antMatchers("/oneFilmSeance**").permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers("/addFilm").hasRole("ADMIN")
                 .anyRequest().authenticated()
