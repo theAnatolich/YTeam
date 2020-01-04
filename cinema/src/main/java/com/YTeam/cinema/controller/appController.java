@@ -43,9 +43,9 @@ public class appController {
     @GetMapping("/")
     public String getFilms(
             Map<String, Object> model
-    ) throws SQLException, ParseException {
-        String q="select name, rating, photo, genre, duration, to_char(day,'dd month') as day, age_limit, start_time, shedule_id, film_id from get_films_shedule order by day, start_time";
-        ResultSet rs = stat.executeQuery(q);
+    ) throws SQLException{
+
+        ResultSet rs=PSQLConnection.getFilmsShedule();
         Map<String, TreeMap<String, ArrayList<Object>>> days = new TreeMap<>();
         Map<String, Map<String, TreeMap<Integer, String>>> schedule = new TreeMap<>();
 
@@ -98,8 +98,7 @@ public class appController {
             @RequestParam(name="film_id", required=false, defaultValue="4") int film_id,
             Map<String, Object> model
     ) throws SQLException, ParseException {
-        String q = "select name, rating, photo, genre, duration, to_char(day,'dd month') as day, age_limit, start_time, shedule_id, film_id from get_films_shedule where film_id="+film_id+" order by day, start_time";
-        ResultSet res = stat.executeQuery(q);
+        ResultSet res = PSQLConnection.getOneFilmSeanse(film_id);
         Map<String, TreeMap<String, ArrayList<Object>>> days = new TreeMap<>();
         Map<String, Map<String, TreeMap<Integer, String>>> schedule = new TreeMap<>();
 
@@ -147,199 +146,6 @@ public class appController {
         return "WEB-INF/pages/oneFilmSeance";
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "WEB-INF/pages/login";
-    }
-
-//    @GetMapping("/addFilm")
-//    public String addFilm() {
-//        return "WEB-INF/pages/admin";
-//    }
-//
-//    @PostMapping("/addFilm")
-//    public ModelAndView postAfisha(@ModelAttribute Film film, Model model) throws SQLException {
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("WEB-INF/pages/addFilm");
-//        String query="";
-//        if(stat.executeQuery(query).getInt(1)==0){
-//            modelAndView.addObject("message","Фильм успешно добавлен.");
-//        }
-//        else {
-//            modelAndView.addObject("message","Ошибка добавления");
-//        }
-//
-//        return modelAndView;
-//    }
-
-    @GetMapping("/SeetSelection")
-    public String getSeetSelection(
-            @RequestParam(name="shedule_id", required=false, defaultValue="18") int shedule_id,
-            Map<String, Object> model
-    ) throws SQLException {
-        String getFilmQuery = "select name, photo, to_char(day,'dd month'), start_time, age_limit, duration from get_films_shedule where shedule_id="+shedule_id;
-        String q="select ID, plase_number,row_number,price,state from ticket  where shedule_id="+shedule_id+" order by row_number,plase_number";
-        ArrayList<Sit> sitList = new ArrayList<>();
-        ResultSet rs = stat.executeQuery(q);
-
-        while (rs.next()){
-            sitList.add(
-               new Sit(
-                    rs.getInt(1),
-                    rs.getInt(2),
-                    rs.getInt(3),
-                    rs.getInt(4),
-                    rs.getInt(5)
-                )
-            );
-        }
-
-        Map<Integer, HashMap<Integer, ArrayList<Integer>>> sit_num = new HashMap<>();
-
-        for (Sit sit: sitList) {
-            ArrayList<Integer> list = new ArrayList<Integer>();
-            list.add(sit.ID);
-            list.add(sit.price);
-            list.add(sit.state);
-
-            if (!sit_num.containsKey(sit.row_number) || sit_num.isEmpty()) {
-                HashMap<Integer, ArrayList<Integer>> map = new HashMap<>();
-                map.put(sit.place_number, list);
-                sit_num.put(sit.row_number, map);
-            } else {
-                HashMap<Integer, ArrayList<Integer>> map = sit_num.get(sit.row_number);
-                map.put(sit.place_number, list);
-
-                sit_num.put(sit.row_number, map);
-            }
-        }
-
-        ArrayList<Object> filmParamList = new ArrayList<>();
-        ResultSet resultQuery = stat.executeQuery(getFilmQuery);
-
-        while (resultQuery.next()){
-            filmParamList.add(resultQuery.getString(1));
-            filmParamList.add(resultQuery.getString(2));
-            filmParamList.add(resultQuery.getString(3));
-            filmParamList.add(resultQuery.getString(4).substring(0, 5));
-            filmParamList.add(Integer.parseInt(String.valueOf(resultQuery.getInt(5))));
-            filmParamList.add(resultQuery.getString(6));
-        }
-
-        model.put("film", filmParamList);
-        model.put("sit_num", sit_num);
-        return "WEB-INF/pages/SeetSelection";
-    }
-
-    @GetMapping("/description")
-    public String getFilmDescription(
-            @RequestParam(name="film_id", required=false) int film_id,
-            Map<String, Object> model
-    ) throws SQLException {
-        String getFilmQuery = "select name,photo,age_limit,duration,director,genre,description,actors,movie,film_id from get_films_shedule where film_id="+film_id+" limit 1";
-        ArrayList<Object> film = new ArrayList<>();
-        ResultSet result = stat.executeQuery(getFilmQuery);
-
-        while (result.next()){
-            film.add(result.getString(1));
-            film.add(result.getString(2));
-            film.add(result.getInt(3));
-            film.add(result.getInt(4));
-            film.add(result.getString(5));
-            film.add(result.getString(6));
-            film.add(result.getString(7));
-            film.add(result.getString(8));
-            film.add(result.getString(9));
-            film.add(result.getInt(10));
-        }
-
-        model.put("film", film);
-        return "WEB-INF/pages/filmDescription";
-    }
-
-//    @GetMapping("/receipt")
-//    public String receipt(
-//            @RequestParam(name="tic", required=false, defaultValue="") String tickets,
-//            Map<String, Object> model
-//    ) {
-//
-//        String[] q=tickets.split("!");
-//        for (String i :q
-//             ) {
-//            model.put("tic"+i, i);
-//        }
-//        return "WEB-INF/pages/receipt";
-//    }
-
-    @PostMapping("/SeetSelection")
-    public ModelAndView getSeetSelection(
-            @RequestParam("filter") String tickets_id, @RequestParam Map<String, Object> model
-    ) throws SQLException, ParseException, InterruptedException {
-        Map<String, ArrayList<Object>> map = new HashMap<>();
-        String[] q=tickets_id.split("!");
-        String selTickets="select t.id,f.name,h.name,t.plase_number,t.row_number,t.price,c.day,c.start_time " +
-                            "from ticket t left join shedule s on(t.shedule_id=s.id) " +
-                            "left join film f on(s.film_id=f.id) " +
-                            "left join hall h on(s.hall_id=h.id) " +
-                            "left join calendar c on(s.calendar_id=c.id) " +
-                            "where t.id=";
-        for (String i : q) {
-            String createOrder = "select buy_ticket("+i+")";
-            ResultSet order_id=stat.executeQuery(createOrder);
-            order_id.next();
-
-            CheckBuyTicket a=new CheckBuyTicket();
-            a.op_id=Integer.valueOf(order_id.getInt(1));
-            Thread myThready = new Thread(a);
-            myThready.start();
 
 
-            int operationId=order_id.getInt(1);
-            ResultSet rs=stat.executeQuery(selTickets+i);
-            rs.next();
-            ArrayList<Object> ticketList=new ArrayList<>();
-            ticketList.add(operationId);
-            ticketList.add(rs.getString(2));
-            ticketList.add(rs.getString(3));
-            ticketList.add(rs.getInt(4));
-            ticketList.add(rs.getInt(5));
-            ticketList.add(rs.getInt(6));
-            ticketList.add(new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(7)));
-            ticketList.add(rs.getString(8).substring(0, 5));
-
-            map.put(i, ticketList);
-        }
-
-        if(Payment.ticketPayment())
-            for (String i : q) {
-                Object a=map.get(i).get(0);
-                PSQLConnection.purchaseConfirmation(Integer.valueOf(a.toString()));
-            }
-        else throw new RuntimeException();
-
-
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("WEB-INF/pages/receipt");
-        modelAndView.addObject("ticket", map);
-
-
-        return modelAndView;
-    }
-
-//    @PostMapping("/returnTicket")
-//    public ModelAndView retutnTicket(
-//            @RequestParam("filter") Integer operation_id, @RequestParam Map<String, Object> model
-//    ) throws SQLException {
-////        String checkReturnVal = "select return_ticket("+operation_id+")";
-////        ResultSet order_id=stat.executeQuery(createOrder);
-////        order_id.next();
-//
-//        String createOrder = "select return_ticket("+operation_id+")";
-//        ResultSet order_id=stat.executeQuery(createOrder);
-//        order_id.next();
-//        ModelAndView modelAndView = new ModelAndView();
-//       // modelAndView.setViewName("WEB-INF/pages/receipt");
-//       // modelAndView.addObject("tic",ticketList);
-//        return modelAndView;
-//    }
 }
