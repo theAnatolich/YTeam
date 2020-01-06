@@ -1,4 +1,4 @@
-package postgresql;
+package com.YTeam.cinema.postgresql;
 import java.sql.*;
 import java.util.Random;
 

@@ -1,20 +1,17 @@
 package com.YTeam.cinema;
 
-import com.YTeam.cinema.controller.appController;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mockito;
-import postgresql.PSQLConnection;
+import com.YTeam.cinema.postgresql.PSQLConnection;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import static org.junit.Assert.*;
 
 @RunWith(JUnit4.class)
 public class CheckBuyTicketTest {

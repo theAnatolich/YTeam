@@ -1,6 +1,6 @@
 package com.YTeam.cinema;
 
-import postgresql.PSQLConnection;
+import com.YTeam.cinema.postgresql.PSQLConnection;
 
 import java.sql.SQLException;
 

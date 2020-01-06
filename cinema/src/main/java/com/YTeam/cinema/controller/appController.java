@@ -1,23 +1,14 @@
 package com.YTeam.cinema.controller;
 
-import com.YTeam.cinema.CheckBuyTicket;
-import com.YTeam.cinema.CheckTicket;
-import com.YTeam.cinema.Payment;
-import com.YTeam.cinema.models.Film;
-import com.YTeam.cinema.models.Sit;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import postgresql.PSQLConnection;
+import com.YTeam.cinema.postgresql.PSQLConnection;
 //import com.google.gson.*;
 
-import java.lang.reflect.Member;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller

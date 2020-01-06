@@ -1,16 +1,13 @@
 package com.YTeam.cinema.controller;
 
-import com.YTeam.cinema.FilmSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import postgresql.PSQLConnection;
+import com.YTeam.cinema.postgresql.PSQLConnection;
 
-import java.lang.reflect.Member;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Map;
 
 @Controller
