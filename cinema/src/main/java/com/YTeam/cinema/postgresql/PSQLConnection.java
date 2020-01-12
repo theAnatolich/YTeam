@@ -9,7 +9,7 @@ public class PSQLConnection {
     /*wifi 192.168.0.107
           cable 192.168.0.103
         * */
-    private static String DB_URL = "jdbc:postgresql://127.0.0.1:64000/cinema";
+    private static String DB_URL = "jdbc:postgresql://192.168.0.103:64000/cinema";
     private static String USER = "pg";
     private static String PASS = "12345678";
 
@@ -67,7 +67,7 @@ public class PSQLConnection {
     }
 
     public static ResultSet getFilmsShedule () throws SQLException {
-        String q="select name, rating, photo, genre, duration, to_char(day,'dd.mm') as day, age_limit, start_time, shedule_id, film_id from get_films_shedule order by day, start_time";
+        String q="select v.name, v.rating, v.photo, v.genre, v.duration, to_char(v.day,'dd.mm') as day, v.age_limit, v.start_time, v.shedule_id, v.film_id, h.name from get_films_shedule v left join hall h on(v.hall_id=h.id) order by day, start_time";
         Statement stat=connectionST.createStatement();
         return stat.executeQuery(q);
     }
@@ -80,7 +80,7 @@ public class PSQLConnection {
 
     public static ResultSet getFilmQuery (int shedule_id) throws SQLException {
 
-        String q = "select name, photo, to_char(day,'dd.mm'), start_time, age_limit, duration from get_films_shedule where shedule_id="+shedule_id;
+        String q = "select v.name, v.photo, to_char(v.day,'dd.mm'), v.start_time, v.age_limit, v.duration, h.name, h.id from get_films_shedule v left join hall h on(v.hall_id=h.id) where shedule_id="+shedule_id;
         Statement stat=connectionST.createStatement();
         return stat.executeQuery(q);
     }
@@ -101,7 +101,7 @@ public class PSQLConnection {
 
     public static ResultSet getTicket (String ticket_id) throws SQLException {
 
-        String q="select t.id,f.name,h.name,t.plase_number,t.row_number,t.price,c.day,c.start_time " +
+        String q="select t.id,f.name,h.hall_type_id,t.plase_number,t.row_number,t.price,c.day,c.start_time, h.name" +
                 "from ticket t left join shedule s on(t.shedule_id=s.id) " +
                 "left join film f on(s.film_id=f.id) " +
                 "left join hall h on(s.hall_id=h.id) " +

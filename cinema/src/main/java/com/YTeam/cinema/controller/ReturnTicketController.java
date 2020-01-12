@@ -30,7 +30,7 @@ public class ReturnTicketController {
         int kek = PSQLConnection.ReturnTicket(id);
         if (/*rs.getInt(1)*/kek == 0){
 
-            modelAndView.addObject("state","Билет был возвращен!");
+            modelAndView.addObject("state","Билет был успешно возвращен!");
             return modelAndView;
         }
 

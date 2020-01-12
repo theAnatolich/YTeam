@@ -15,6 +15,10 @@
         <br/>
         <h4 style="text-align: center;">Возврат билета</h4>
 
+        <br/>
+        <span th:if="${state}" th:utext="${state}"></span>
+        <br/>
+
         <form action="#" th:action="@{/returnTicket}" name="id" method="post" class="form-inline mt-5">
             <div class="form-group mx-sm-3 mb-2">
                 <label for="returnTicket" class="sr-only">Введите номер билета</label>

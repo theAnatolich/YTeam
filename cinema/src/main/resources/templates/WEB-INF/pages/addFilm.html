@@ -21,49 +21,52 @@
                 <div class="row">
                     <div class="col-6 form-group mb-2">
                         <label for="filmName" class="sr-only">Введите название фильма</label>
-                        <input type="text" name="name" class="form-control" id="filmName" placeholder="Введите название фильма">
+                        <input type="text" name="name" class="form-control" id="filmName" placeholder="Введите название фильма" required>
                     </div>
                     <div class="col-6 form-group mb-2">
                         <label for="filmType" class="sr-only">Введите тип фильма</label>
-                        <input type="text" name="type" class="form-control" id="filmType" placeholder="Введите тип фильма">
+                        <input type="text" name="type" class="form-control" id="filmType" placeholder="Введите тип фильма" required>
                     </div>
                     <div class="col-6 form-group mb-2">
                         <label for="filmDirector" class="sr-only">Введите режисера</label>
-                        <input type="text" name="director" class="form-control" id="filmDirector" placeholder="Введите режисера">
+                        <input type="text" name="director" class="form-control" id="filmDirector" placeholder="Введите режисера" required>
                     </div>
                     <div class="col-6 form-group mb-2">
                         <label for="filmCast" class="sr-only">Введите актеров фильма</label>
-                        <input type="text" name="cast" class="form-control" id="filmCast" placeholder="Введите актеров фильма">
+                        <input type="text" name="cast" class="form-control" id="filmCast" placeholder="Введите актеров фильма" required>
                     </div>
                     <div class="col-6 form-group mb-2">
                         <label for="filmPhoto" class="sr-only">Введите название файла с постером</label>
-                        <input type="text" name="photo" class="form-control" id="filmPhoto" placeholder="Введите название файла с постером">
+                        <input type="text" name="photo" class="form-control" id="filmPhoto" placeholder="Введите название файла с постером" required>
                     </div>
                     <div class="col-6 form-group mb-2">
                         <label for="filmDate" class="sr-only">Введите дату выхода фильма</label>
-                        <input type="date" name="date" class="form-control" id="filmDate" placeholder="Введите дату выхода фильма">
+                        <input type="date" name="date" class="form-control" id="filmDate" placeholder="Введите дату выхода фильма" required>
                     </div>
                     <div class="col-6 form-group3 mb-2">
                         <label for="filmRating" class="sr-only">Введите рейтинг</label>
-                        <input type="number" name="rating" class="form-control" id="filmRating" placeholder="Введите рейтинг">
+                        <input type="number" name="rating" class="form-control" id="filmRating" placeholder="Введите рейтинг" required>
                     </div>
                     <div class="col-6 form-group mb-2">
                         <label for="filmGenre" class="sr-only">Введите жанр</label>
-                        <input type="text" name="genre" class="form-control" id="filmGenre" placeholder="Введите жанр">
+                        <input type="text" name="genre" class="form-control" id="filmGenre" placeholder="Введите жанр" required>
                     </div>
                     <div class="col-6 form-group mb-2">
                         <label for="filmDuration" class="sr-only">Введите длительность фильма</label>
-                        <input type="number" min="0" max="1000" name="duration" class="form-control" id="filmDuration" placeholder="Введите длительность фильма">
+                        <input type="number" min="0" max="1000" name="duration" class="form-control" id="filmDuration" placeholder="Введите длительность фильма" required>
                     </div>
                     <div class="col-6 form-group mb-2">
                         <label for="filmAgeLimit" class="sr-only">Введите возрастное ограничение фильма</label>
-                        <input type="number" min="0" name="ageLimit" class="form-control" id="filmAgeLimit" placeholder="Введите возрастное ограничение фильма">
+                        <input type="number" min="0" name="ageLimit" class="form-control" id="filmAgeLimit" placeholder="Введите возрастное ограничение фильма" required>
                     </div>
                     <div class="col-6 form-group mb-2">
                         <label for="filmDesc" class="sr-only">Введите описание фильма</label>
-                        <textarea type="text" name="description" class="form-control" id="filmDesc" placeholder="Введите описание фильма"></textarea>
+                        <textarea type="text" name="description" class="form-control" id="filmDesc" placeholder="Введите описание фильма" required></textarea>
                     </div>
                 </div>
+                <br/>
+                <br/>
+                <span th:if="${message}" th:utext="${message}"></span>
                 <br/>
                 <input type="submit" class="btn btn-primary mb-2" value="Добавить"/>
             </form>

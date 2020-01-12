@@ -71,6 +71,8 @@ public class SeetSelectionController {
             filmParamList.add(resultQuery.getString(4).substring(0, 5));
             filmParamList.add(Integer.parseInt(String.valueOf(resultQuery.getInt(5))));
             filmParamList.add(resultQuery.getString(6));
+            filmParamList.add(resultQuery.getString(7));
+            filmParamList.add(resultQuery.getString(8));
         }
 
         model.put("film", filmParamList);
@@ -103,12 +105,13 @@ public class SeetSelectionController {
             ArrayList<Object> ticketList=new ArrayList<>();
             ticketList.add(operationId);
             ticketList.add(rs.getString(2));
-            ticketList.add(rs.getString(3));
+            ticketList.add(rs.getInt(3));
             ticketList.add(rs.getInt(4));
             ticketList.add(rs.getInt(5));
             ticketList.add(rs.getInt(6));
             ticketList.add(new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(7)));
             ticketList.add(rs.getString(8).substring(0, 5));
+            ticketList.add(rs.getString(9));
             map.put(i, ticketList);
         }
 

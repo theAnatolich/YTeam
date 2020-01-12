@@ -52,11 +52,11 @@
 <!--                        </div>-->
                         <div class="col-7 mt-5">
                             <a
-                                    class="ml-3 schedule"
-                                    th:each="time : ${schedule.get(day.key).get(film.key)}"
-                                    th:id="${time.key}"
-                                    th:utext="${time.value}"
-                                    th:href="'/SeetSelection?shedule_id=' + ${time.key}"
+                                class="ml-3 schedule"
+                                th:each="time : ${schedule.get(day.key).get(film.key)}"
+                                th:id="${time.key}"
+                                th:utext="${time.value}"
+                                th:href="'/SeetSelection?shedule_id=' + ${time.key}"
                             ></a>
                         </div>
                     </div>

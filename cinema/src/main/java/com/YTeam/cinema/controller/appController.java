@@ -50,15 +50,15 @@ public class appController {
 
             if (!schedule.containsKey(day) || schedule.isEmpty()) {
                 TreeMap<Integer, String> scheduleId = new TreeMap<>();
-                scheduleId.put(rs.getInt(9), rs.getString(8).substring(0, 5));
+                scheduleId.put(rs.getInt(9), rs.getString(8).substring(0, 5) + " " + rs.getString(11));
                 nameFilm.put(name, scheduleId);
                 schedule.put(day, nameFilm);
             } else {
                 try {
-                    schedule.get(day).get(name).put(rs.getInt(9), rs.getString(8).substring(0, 5));
+                    schedule.get(day).get(name).put(rs.getInt(9), rs.getString(8).substring(0, 5) + " " + rs.getString(11));
                 } catch (Exception e) {
                     TreeMap<Integer, String> scheduleId = new TreeMap<>();
-                    scheduleId.put(rs.getInt(9), rs.getString(8).substring(0, 5));
+                    scheduleId.put(rs.getInt(9), rs.getString(8).substring(0, 5) + " " + rs.getString(11));
                     schedule.get(day).put(name, scheduleId);
                 }
             }
