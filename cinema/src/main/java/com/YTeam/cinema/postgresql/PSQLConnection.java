@@ -102,7 +102,7 @@ public class PSQLConnection {
     public static ResultSet getTicket (String ticket_id) throws SQLException {
 
         String q="select t.id,f.name,h.hall_type_id,t.plase_number,t.row_number,t.price,c.day,c.start_time, h.name" +
-                "from ticket t left join shedule s on(t.shedule_id=s.id) " +
+                " from ticket t left join shedule s on(t.shedule_id=s.id) " +
                 "left join film f on(s.film_id=f.id) " +
                 "left join hall h on(s.hall_id=h.id) " +
                 "left join calendar c on(s.calendar_id=c.id) " +

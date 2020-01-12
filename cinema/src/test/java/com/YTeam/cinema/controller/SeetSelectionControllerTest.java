@@ -50,7 +50,7 @@ public class SeetSelectionControllerTest {
 
         int id=1,id2=1;
         String s="select ID, plase_number,row_number,price,state from ticket  where shedule_id="+id+" order by row_number,plase_number";
-        String s2 = "select name, photo, to_char(day,'dd.mm'), start_time, age_limit, duration from get_films_shedule where shedule_id="+id2;
+        String s2 = "select v.name, v.photo, to_char(v.day,'dd.mm'), v.start_time, v.age_limit, v.duration, h.name, h.id from get_films_shedule v left join hall h on(v.hall_id=h.id) where shedule_id="+id2;
 
         Mockito.when(connectMock.createStatement()).thenReturn(statMock);
         Mockito.when(statMock.executeQuery(s)).thenReturn(resMock);
@@ -97,7 +97,7 @@ public class SeetSelectionControllerTest {
 
         int id=1;
         String s = "select buy_ticket("+id+")";
-        String s1="select t.id,f.name,h.name,t.plase_number,t.row_number,t.price,c.day,c.start_time " +
+        String s1="select t.id,f.name,h.hall_type_id,t.plase_number,t.row_number,t.price,c.day,c.start_time, h.name " +
                 "from ticket t left join shedule s on(t.shedule_id=s.id) " +
                 "left join film f on(s.film_id=f.id) " +
                 "left join hall h on(s.hall_id=h.id) " +
@@ -158,7 +158,7 @@ public class SeetSelectionControllerTest {
 
         int id=1;
         String s = "select buy_ticket("+id+")";
-        String s1="select t.id,f.name,h.name,t.plase_number,t.row_number,t.price,c.day,c.start_time " +
+        String s1="select t.id,f.name,h.hall_type_id,t.plase_number,t.row_number,t.price,c.day,c.start_time, h.name " +
                 "from ticket t left join shedule s on(t.shedule_id=s.id) " +
                 "left join film f on(s.film_id=f.id) " +
                 "left join hall h on(s.hall_id=h.id) " +

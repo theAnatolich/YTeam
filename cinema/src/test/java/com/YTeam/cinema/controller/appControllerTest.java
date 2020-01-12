@@ -37,7 +37,7 @@ public class appControllerTest {
         Statement statMock = Mockito.mock(Statement.class);
         ResultSet resMock = Mockito.mock(ResultSet.class);
 
-        String s="select name, rating, photo, genre, duration, to_char(day,'dd.mm') as day, age_limit, start_time, shedule_id, film_id from get_films_shedule order by day, start_time";
+        String s="select v.name, v.rating, v.photo, v.genre, v.duration, to_char(v.day,'dd.mm') as day, v.age_limit, v.start_time, v.shedule_id, v.film_id, h.name from get_films_shedule v left join hall h on(v.hall_id=h.id) order by day, start_time";
 
         Mockito.when(connectMock.createStatement()).thenReturn(statMock);
         Mockito.when(statMock.executeQuery(s)).thenReturn(resMock);

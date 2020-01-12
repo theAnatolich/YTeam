@@ -81,7 +81,7 @@ public class ReturnTicketControllerTest {
 
         ModelAndView model1 = ticketContr.postAfisha(id);
         Assert.assertTrue("ReturnTicketControllerTest Test - postAfisha(Success): Error!",
-                model1.getModel().get("state").equals("Билет был возвращен!"));
+                model1.getModel().get("state").equals("Билет был успешно возвращен!"));
 
     }
 }
