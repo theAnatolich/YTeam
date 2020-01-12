@@ -57,7 +57,7 @@ public class AddFilmControllerTest {
         Mockito.when(statMock.executeQuery(s)).thenReturn(resMock);
 
         Mockito.when(resMock.next()).thenReturn(true,false);
-        Mockito.when(resMock.getInt(1)).thenReturn(1);
+        Mockito.when(resMock.getInt(1)).thenReturn(-1);
 
         addFilm.setStat(statMock);
 
