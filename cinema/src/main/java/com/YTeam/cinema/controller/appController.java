@@ -13,23 +13,8 @@ import java.util.*;
 
 @Controller
 public class appController {
-    private PSQLConnection connection ;
-    private Statement stat;
-    public appController() throws SQLException {
-        connection = new PSQLConnection();
-        stat=connection.getConnection().createStatement();
-    }
-    public appController(boolean l) {    }
-    public appController(PSQLConnection connection, Statement stat) {
-        this.connection = connection;
-        this.stat = stat;
-    }
-    public void setConnection(PSQLConnection p) {
-        connection=p;
-    }
-    public void setStat(Statement s) {
-        stat=s;
-    }
+    public appController() {    }
+
 
     @GetMapping("/")
     public String getFilms(

@@ -26,7 +26,7 @@ public class appControllerTest {
     @Before
     public void before()
     {
-        appContr = new appController(true);
+        appContr = new appController();
         connection = new PSQLConnection();
     }
 

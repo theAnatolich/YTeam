@@ -13,14 +13,13 @@ public class PSQLConnection {
     private static String USER = "pg";
     private static String PASS = "12345678";
 
-    public Connection getConnection() {
-        return connection;
-    }
+//    public Connection getConnection() {
+//        return connection;
+//    }
     public void setConnectionST(Connection connection) {
         this.connectionST = connection;
     }
-    public PSQLConnection(boolean i){}
-    private Connection connection;
+
     private static Connection connectionST;
 
     static {
@@ -31,14 +30,14 @@ public class PSQLConnection {
         }
     }
 
-    public PSQLConnection(){
-        try {
-            connection = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return;
-        }
-    }
+//    public PSQLConnection(){
+//        try {
+//            connection = (Connection) DriverManager.getConnection(DB_URL,USER,PASS);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return;
+//        }
+//    }
 
     public static boolean checkOperation(int op_id) throws SQLException {
         Statement stat=connectionST.createStatement();

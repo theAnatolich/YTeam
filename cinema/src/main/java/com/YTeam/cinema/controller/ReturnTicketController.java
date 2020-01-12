@@ -12,17 +12,6 @@ import java.util.Map;
 
 @Controller
 public class ReturnTicketController {
-    private PSQLConnection connection ;
-    private Statement stat;
-    public ReturnTicketController( boolean i)  {
-    }
-    public void setStat(Statement s) {
-        stat=s;
-    }
-    public ReturnTicketController() throws SQLException {
-        this.connection = new PSQLConnection();
-        this.stat = connection.getConnection().createStatement();
-    }
 
     @GetMapping("/returnTicket")
     public String getAfisha(
