@@ -1,4 +1,6 @@
 package com.YTeam.cinema.postgresql;
+import com.YTeam.cinema.Bean.AddFilmModel;
+
 import java.sql.*;
 import java.util.Random;
 
@@ -66,20 +68,20 @@ public class PSQLConnection {
     }
 
     public static ResultSet getFilmsShedule () throws SQLException {
-        String q="select name, rating, photo, genre, duration, to_char(day,'dd month') as day, age_limit, start_time, shedule_id, film_id from get_films_shedule order by day, start_time";
+        String q="select name, rating, photo, genre, duration, to_char(day,'dd.mm') as day, age_limit, start_time, shedule_id, film_id from get_films_shedule order by day, start_time";
         Statement stat=connectionST.createStatement();
         return stat.executeQuery(q);
     }
 
     public static ResultSet getOneFilmSeanse (int film_id) throws SQLException {
-        String q = "select name, rating, photo, genre, duration, to_char(day,'dd month') as day, age_limit, start_time, shedule_id, film_id from get_films_shedule where film_id="+film_id+" order by day, start_time";
+        String q = "select name, rating, photo, genre, duration, to_char(day,'dd.mm') as day, age_limit, start_time, shedule_id, film_id from get_films_shedule where film_id="+film_id+" order by day, start_time";
         Statement stat=connectionST.createStatement();
         return stat.executeQuery(q);
     }
 
     public static ResultSet getFilmQuery (int shedule_id) throws SQLException {
 
-        String q = "select name, photo, to_char(day,'dd month'), start_time, age_limit, duration from get_films_shedule where shedule_id="+shedule_id;
+        String q = "select name, photo, to_char(day,'dd.mm'), start_time, age_limit, duration from get_films_shedule where shedule_id="+shedule_id;
         Statement stat=connectionST.createStatement();
         return stat.executeQuery(q);
     }
@@ -115,5 +117,44 @@ public class PSQLConnection {
         String q = "select buy_ticket("+ticket_id+")";
         Statement stat=connectionST.createStatement();
         return stat.executeQuery(q);
+    }
+
+    public static boolean AddFilm (AddFilmModel film) throws SQLException {
+
+        String query="select add_film('"+
+                film.name+"','"+
+                film.type+"','"+
+                film.director+"','"+
+                film.cast+"','"+
+                film.description+"',to_date('"+
+                film.date+"','yyyy-mm-dd'),'"+
+                film.photo+"',"+
+                (int)film.rating+",'"+
+                film.genre+"',"+
+                film.duration+","+
+                film.ageLimit+
+                ")";
+        Statement stat=connectionST.createStatement();
+        ResultSet rs=stat.executeQuery(query);
+        rs.next();
+        int a=rs.getInt(1);
+
+        if(a==0){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+
+    public static int ReturnTicket (int id) throws SQLException {
+
+        String q="select return_ticket("+id+")";
+        Statement stat=connectionST.createStatement();
+        ResultSet rs= stat.executeQuery(q);
+        rs.next();
+        return rs.getInt(1);
+
     }
 }

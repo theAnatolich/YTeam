@@ -95,7 +95,7 @@ public class appController {
 
         while (res.next()){
             ArrayList<Object> list = new ArrayList<>();
-            list.add(Integer.parseInt(res.getString(2)));
+            list.add(Double.parseDouble(res.getString(2)));
             list.add(res.getString(3));
             list.add(res.getString(4));
             list.add(res.getString(5));

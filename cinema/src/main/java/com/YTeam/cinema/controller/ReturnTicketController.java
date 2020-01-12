@@ -37,23 +37,14 @@ public class ReturnTicketController {
     ) throws SQLException {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("WEB-INF/pages/returnTicket");
-        String q="select return_ticket("+id+")";
 
-        ResultSet rs= stat.executeQuery(q);
-        rs.next();
-        int kek = rs.getInt(1);
-
+        int kek = PSQLConnection.ReturnTicket(id);
         if (/*rs.getInt(1)*/kek == 0){
 
             modelAndView.addObject("state","Билет был возвращен!");
             return modelAndView;
         }
 
-        if (/*rs.getInt(1)*/kek == 5){
-
-            modelAndView.addObject("state","Билет не может быть возвращен!");
-            return modelAndView;
-        }
        modelAndView.addObject("state","Данный билет не может быть возвращен! \n Обратитесь к администратору");
         return modelAndView;
     }
